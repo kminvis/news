@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS 피드 제목 회전</title>
+    <style>
+        #title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="title">로딩 중...</div>
+
+<script>
+    // RSS2JSON API를 사용하여 RSS 피드를 JSON 형식으로 가져오기
+    const rssUrl = "https://rss2json.com/api.json?rss_url=https://www.yna.co.kr/rss/politics.xml"; // 예시 RSS URL
+
+    // 제목을 담을 배열
+    let titles = [];
+    let currentIndex = 0;
+
+    // RSS 데이터를 가져오는 함수
+    async function fetchRSS() {
+        try {
+            const response = await fetch(rssUrl);
+            const data = await response.json();
+            // RSS 데이터에서 제목들만 추출
+            titles = data.items.map(item => item.title);
+            updateTitle(); // 제목 업데이트 시작
+        } catch (error) {
+            console.error('RSS 피드를 가져오는 중 오류가 발생했습니다:', error);
+            document.getElementById("title").innerText = "RSS 데이터를 가져올 수 없습니다.";
+        }
+    }
+
+    // 제목을 5초마다 변경하는 함수
+    function updateTitle() {
+        if (titles.length > 0) {
+            document.getElementById("title").innerText = titles[currentIndex];
+            currentIndex = (currentIndex + 1) % titles.length; // 제목이 끝나면 첫 번째로 돌아감
+        }
+    }
+
+    // 5초마다 제목을 변경
+    setInterval(updateTitle, 5000);
+
+    // RSS 피드 데이터 가져오기
+    fetchRSS();
+
+</script>
+
+</body>
+</html>
