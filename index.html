@@ -5,11 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RSS 피드 제목 회전</title>
     <style>
+        * {
+            margin: 0;
+        }
+        html {
+            width: 1080px;
+        }
         #title {
-            font-size: 24px;
+            font-size: 36px;
             font-weight: bold;
             text-align: center;
-            margin-top: 50px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: red;
+            color: white;
+            line-height: 1;
+            padding: 10px 50px;
+        }
+        #title::before {
+            content: "뉴스속보"
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
         }
     </style>
 </head>
@@ -48,7 +66,7 @@
     }
 
     // 5초마다 제목을 변경
-    setInterval(updateTitle, 5000);
+    setInterval(updateTitle, 10000);
 
     // RSS 피드 데이터 가져오기
     fetchRSS();
